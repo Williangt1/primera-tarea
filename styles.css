@@ -1,0 +1,49 @@
+:root {
+  --bg-surface: #f4f6f9;
+  --card-bg: #ffffff;
+  --primary-color: #0d6efd;
+  --border-color: #e2e8f0;
+}
+
+body {
+  background-color: var(--bg-surface);
+  color: #334155;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.top-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.video-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+.video-banner {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background-color: #0f172a;
+}
+
+.comment-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.subcomment-level {
+  border-left: 3px solid #cbd5e1;
+  padding-left: 12px;
+  margin-left: 16px;
+}

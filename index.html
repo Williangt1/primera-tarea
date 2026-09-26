@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Académico - Videos UMG</title>
+  
+  <!-- Bootstrap 5 CSS y Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Hoja de estilos externa -->
+  <link rel="stylesheet" href="styles.">
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header class="top-header sticky-top py-3 mb-4 shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <div class="bg-primary text-white rounded p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+          <i class="bi bi-mortarboard-fill fs-5"></i>
+        </div>
+        <span class="fs-5 fw-bold text-dark mb-0">UMG VideoLearn</span>
+      </div>
+
+      <!-- Área de Perfil / Botones -->
+      <div id="userProfileZone" class="d-flex align-items-center gap-2">
+        <!-- Render dinámico con JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal con Layout en 2 Columnas -->
+  <div class="container mb-5">
+    <div class="row g-4">
+      
+      <!-- Columna Lateral: Filtros -->
+      <aside class="col-lg-3">
+        <div class="bg-white p-3 rounded-3 border">
+          <h6 class="fw-bold mb-3"><i class="bi bi-funnel-fill text-primary me-2"></i>Filtrar Contenido</h6>
+          
+          <div class="mb-3">
+            <label class="form-label small text-muted">Buscar título</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+              <input type="text" id="filterKeyword" class="form-control form-control-sm" placeholder="Palabra clave...">
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label small text-muted">Materia / Categoría</label>
+            <select id="filterSubject" class="form-select form-select-sm">
+              <option value="TODAS">Ver Todas</option>
+            </select>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Columna Central: Galería -->
+      <main class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold mb-0">Catálogo de Clases</h5>
+          <span id="counterBadge" class="badge bg-secondary">0 videos</span>
+        </div>
+
+        <div id="videoDeck" class="row row-cols-1 row-cols-md-2 g-3">
+          <!-- Inyección JS -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal Visor de Video y Conversación -->
+  <div class="modal fade" id="mediaViewerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content border-0">
+        <div class="modal-header border-bottom">
+          <h6 class="modal-title fw-bold text-dark" id="mediaTitleLabel">Cargando video...</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        
+        <div class="modal-body p-4">
+          <div class="ratio ratio-16x9 rounded-3 overflow-hidden bg-black mb-3">
+            <video id="mediaPlayerElement" controls poster="">
+              <source id="mediaStreamSource" src="" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <span id="mediaCategoryTag" class="badge bg-light text-primary border"></span>
+              <span id="mediaTimeTag" class="badge bg-light text-muted border ms-1"><i class="bi bi-clock me-1"></i>--:--</span>
+            </div>
+            
+            <button id="likeReactionBtn" class="btn btn-outline-danger btn-sm" onclick="sendVideoLike()">
+              <i class="bi bi-hand-thumbs-up-fill me-1"></i>Me Gusta (<span id="likesTally">0</span>)
+            </button>
+          </div>
+
+          <p id="mediaDescriptionText" class="text-secondary small mb-4"></p>
+
+          <hr class="text-muted">
+
+          <!-- Conversación e Interacciones -->
+          <div class="comments-section">
+            <h6 class="fw-bold mb-3"><i class="bi bi-chat-left-dots-fill text-primary me-2"></i>Comentarios</h6>
+            
+            <!-- Caja de publicación -->
+            <div id="postCommentSection" class="mb-4">
+              <!-- JS inyecta caja o alerta -->
+            </div>
+
+            <!-- Listado en árbol -->
+            <div id="conversationStream" class="d-flex flex-column gap-3">
+              <!-- Árbol dinámico -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Ingreso -->
+  <div class="modal fade" id="sessionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content shadow border-0">
+        <div class="modal-header">
+          <h6 class="modal-title fw-bold">Acceso a la Plataforma</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="sessionForm" onsubmit="processLogin(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Carné o Correo</label>
+              <input type="text" id="credentialInput" class="form-control form-control-sm" required placeholder="Carné o email">
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">PIN</label>
+              <input type="password" id="pinInput" class="form-control form-control-sm" required placeholder="PIN numérico">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm w-100">Iniciar Sesión</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nuevo Alumno -->
+  <div class="modal fade" id="enrollModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow border-0">
+        <div class="modal-header">
+          <h6 class="modal-title fw-bold">Inscripción de Estudiante</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="enrollForm" onsubmit="processRegister(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Carné Oficial (9999-99-99999)</label>
+              <input type="text" id="newCarne" class="form-control form-control-sm" placeholder="Ej: 1890-20-11489" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Nombre y Apellido</label>
+              <input type="text" id="newName" class="form-control form-control-sm" placeholder="Tu nombre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Correo Institucional / Personal</label>
+              <input type="email" id="newEmail" class="form-control form-control-sm" placeholder="alumno@dominio.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">PIN Numérico (Solo dígitos)</label>
+              <input type="password" id="newPin" class="form-control form-control-sm" placeholder="Solo números" required>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm w-100">Registrar Alumno</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts al final del body -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
